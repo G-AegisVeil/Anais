@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Valor y Tu Propósito - Anaís</title>
+    <style>
+        /* ==================== AJUSTES BLOGGER Y SCROLLING (CRÍTICO) ==================== */
+        #navbar-iframe { display: none !important; }
+        .header-outer, .footer-outer, .main-inner, .sidebar-container, .post-share-buttons, .widget-content, .widget, .post-footer, .post-header, .blog-pager, .profile-link, .popup-box, .blogger-profile, .content-outer, .column-left-outer, .column-right-outer, .main-inner .columns, .main-container, .tabs-outer, .HTML, .quickedit { display: none !important; }
+        
+        /* Asegura que el contenedor principal pueda hacer scroll */
+        #outer-wrapper, #content-wrapper, body, .post-body { 
+            background: #0f0f1a !important; 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh; 
+            width: 100%;
+            overflow-x: hidden;
+            display: flex; 
+            justify-content: center;
+            align-items: flex-start; 
+            box-sizing: border-box;
+        }
+        
+        /* ==================== FONDO ANIMADO (ESTRELLAS) ==================== */
+        body {
+            font-family: 'Georgia', serif;
+            color: #e4e4f0;
+            position: relative;
+        }
+        .stars, .stars2, .stars3 {
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent; z-index: 1; pointer-events: none;
+        }
+        .stars { background-image: radial-gradient(2px 2px at 20% 30%, #eee, rgba(0,0,0,0)), radial-gradient(2px 2px at 40% 70%, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 60% 16%, #ddd, rgba(0,0,0,0)); background-size: 200px 200px; animation: shine 12s linear infinite; }
+        .stars2 { background-image: radial-gradient(2px 2px at 50% 50%, #fff, rgba(0,0,0,0)), radial-gradient(2px 2px at 70% 20%, #eee, rgba(0,0,0,0)); background-size: 300px 300px; animation: shine 18s linear infinite reverse; }
+        
+        @keyframes shine { from {transform: translateY(0px);} to {transform: translateY(-200px);} }
+
+        /* ==================== CONTENEDOR PRINCIPAL ==================== */
+        .container {
+            position: relative; z-index: 10;
+            width: 95%; max-width: 750px;
+            margin: 40px auto; 
+            padding: 20px;
+            background: rgba(30, 30, 50, 0.95);
+            border: 1px solid rgba(139, 233, 253, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            display: flex; flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .phase { display: none; flex-direction: column; align-items: center; width: 100%; animation: fadeIn 1.2s ease-out; }
+        #initialScreen { display: flex; } 
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        /* Contenedor de cada pregunta para asegurar la pila vertical */
+        .question-block {
+            width: 100%; 
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        /* ==================== BARRA DE PROGRESO ==================== */
+        #progressBarContainer {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            text-align: left;
+        }
+        #progressText {
+            font-size: 0.9em;
+            color: #bd93f9;
+            margin-bottom: 5px;
+        }
+        #progressBar {
+            width: 100%;
+            height: 8px;
+            background-color: #3f3f5a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        #progressFill {
+            height: 100%;
+            width: 0%;
+            background-color: #8be9fd;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* ==================== TIPOGRAFÍA Y ESTRUCTURA DE PREGUNTA ==================== */
+        h1 { color: #8be9fd; font-size: 2.2em; margin-bottom: 15px; text-shadow: 0 0 10px rgba(139, 233, 253, 0.3); }
+        h2 { 
+            color: #d0d0e1; font-size: 1.2em; margin: 25px 0 20px 0; width: 100%; 
+            font-weight: bold; text-align: left; 
+        }
+        p { font-size: 1em; line-height: 1.6; margin-bottom: 20px; color: #b8b8d0; }
+
+        /* IMAGEN */
+        .img-box { width: 100%; max-width: 380px; margin: 10px auto 25px; border-radius: 10px; overflow: hidden; border: 2px solid #3f3f5a; }
+        .img-box img { width: 100%; height: auto; display: block; }
+
+        /* BOTONES */
+        .btn { padding: 14px 30px; border: none; border-radius: 50px; cursor: pointer; font-size: 1em; font-weight: bold; transition: 0.3s; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-start { background: linear-gradient(45deg, #8be9fd, #00b894); color: #0f0f1a; box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3); }
+        .btn-start:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 184, 148, 0.4); }
+
+        .btn-quiz { 
+            background-color: #2d2d44; width: 100%; max-width: 550px; color: #e4e4f0; 
+            display: block; 
+            text-align: left; margin: 8px auto; padding: 18px 15px; 
+            border-radius: 8px; border: 1px solid #3f3f5a; transition: all 0.2s; 
+            font-size: 0.95em; line-height: 1.4;
+        }
+        .btn-quiz:hover { background-color: #3d3d5c; border-color: #8be9fd; transform: translateX(3px); }
+        
+        /* BOTÓN DE CONTINUAR - Visible y accesible */
+        .btn-next { 
+            background-color: #8be9fd; color: #1a1a2e; margin-top: 30px; 
+            width: 90%; max-width: 300px; padding: 15px; 
+            opacity: 0.5; pointer-events: none; 
+        }
+        .btn-next.enabled { opacity: 1; pointer-events: auto; cursor: pointer; }
+
+        /* INPUTS */
+        input, textarea { 
+            width: 100%; max-width: 550px; padding: 15px; border-radius: 8px; 
+            border: 1px solid #5a5a7a; background: #2d2d44; color: #fff; 
+            margin: 15px 0; font-family: inherit; font-size: 1em; 
+        }
+        textarea { min-height: 80px; resize: vertical; }
+
+        /* CAJA DE REFLEXIÓN BÍBLICA */
+        .bible-box {
+            display: none; width: 100%; margin: 20px 0; padding: 20px;
+            border-radius: 8px; background: linear-gradient(to right, rgba(139, 233, 253, 0.05), rgba(0, 0, 0, 0));
+            border-left: 4px solid #f1fa8c; 
+            text-align: left; font-style: italic; color: #f8f8f2; line-height: 1.6;
+            animation: slideIn 0.8s;
+        }
+        .bible-box strong { color: #f1fa8c; }
+        
+        /* MANIFIESTO Y TARJETA */
+        #proposalText { font-size: 1em; line-height: 1.9; white-space: pre-wrap; text-align: left; color: #e4e4f0; }
+        .verse-card { 
+            display: none; margin: 30px auto; padding: 25px; max-width: 450px;
+            background: linear-gradient(135deg, #2d2d44, #1a1a2e);
+            border: 1px solid #bd93f9; border-radius: 15px;
+            box-shadow: 0 0 30px rgba(189, 147, 249, 0.2);
+            text-align: center; 
+        }
+        .verse-card h3 { color: #bd93f9; margin-top: 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px; }
+        .verse-card p { font-size: 1.2em; color: #fff; font-style: italic; margin: 15px 0; }
+        .verse-card span { display: block; margin-top: 10px; color: #8be9fd; font-weight: bold; }
+        
+        /* Estilo para el Versículo de Visión */
+        .vision-verse {
+            display: block;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: rgba(0, 184, 148, 0.1);
+            border-radius: 8px;
+            border: 1px solid #00b894;
+            font-style: italic;
+            color: #50fa7b;
+            text-align: center;
+        }
+        
+        /* Estilo para la Nota Personal de Gratitud */
+        .personal-note {
+            display: block;
+            margin: 20px 0 30px;
+            padding: 15px;
+            background-color: rgba(189, 147, 249, 0.1);
+            border-left: 4px solid #bd93f9;
+            border-radius: 0 8px 8px 0;
+            color: #f8f8f2;
+            font-size: 1.05em;
+            line-height: 1.5;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div><div class="stars2"></div>
+
+    <div class="container">
+        
+        <div id="initialScreen" class="phase">
+            <h1>Tu Valor y Tu Propósito</h1>
+            <div class="img-box">
+                <img src="https://i.pinimg.com/736x/10/e5/ff/10e5ff8063e4ebcbf23c6c2068234c43.jpg" alt="Inspiración">
+            </div>
+            <p>Hola Anaís. Aunque pase el tiempo y la distancia, siempre he admirado tu fe. He preparado este breve ejercicio para recordarte lo especial que eres para Dios.</p>
+            <button class="btn btn-start" onclick="startApp()">Comenzar Experiencia</button>
+        </div>
+
+        <div id="phase1" class="phase">
+            <h1>Llave de Acceso</h1>
+            <p>Para entrar, escribe el Nombre que es la fuente de todo don perfecto.</p>
+            <p style="color: #f1fa8c; font-size: 0.9em;">(Pista: 5 letras, J...)</p>
+            <input type="text" id="passCode" placeholder="Escribe la respuesta...">
+            <button class="btn btn-start" onclick="checkCode()">Acceder</button>
+            <p id="errorMsg" style="color: #ff5555; display: none; margin-top:10px;">Inténtalo de nuevo.</p>
+        </div>
+
+        <div id="phase2" class="phase">
+            <h1 style="font-size: 1.8em;">Afirmando Tu Fe</h1>
+            
+            <div id="progressBarContainer">
+                <div id="progressText">Pregunta 1 de 4</div>
+                <div id="progressBar"><div id="progressFill"></div></div>
+            </div>
+
+            <form id="quizForm">
+                
+                <div class="question-block" id="q1">
+                    <h2>1. ¿Qué representa la Fe para ti en este momento de tu vida?</h2>
+                    <button type="button" class="btn btn-quiz" data-q="q1" data-a="A" onclick="selectAnswer(this)">A) Es mi <strong>Ancla</strong>, la certeza de que Dios es quien dice ser, sin importar lo que vea.</button>
+                    <button type="button" class="btn btn-quiz" data-q="q1" data-a="B" onclick="selectAnswer(this)">B) Es mi <strong>Fuerza</strong>, el combustible para levantarme cada día y seguir luchando.</button>
+                    <button type="button" class="btn btn-quiz" data-q="q1" data-a="C" onclick="selectAnswer(this)">C) Es mi <strong>Paz</strong>, el saber que mi futuro ya está en Sus manos perfectas.</button>
+                    
+                    <div class="bible-box" id="ref-q1"></div> 
+                    
+                    <button type="button" class="btn btn-next" data-q="q1" onclick="nextQ(this)">Continuar</button>
+                </div>
+
+                <div class="question-block" id="q2" style="display:none;">
+                    <h2>2. Cuando tienes un día difícil o te sientes agotada, ¿dónde encuentras refugio y recarga?</h2>
+                    <button type="button" class="btn btn-quiz" data-q="q2" data-a="A" onclick="selectAnswer(this)">A) En el <strong>Silencio</strong>, esperando escuchar la voz de Dios en la tranquilidad.</button>
+                    <button type="button" class="btn btn-quiz" data-q="q2" data-a="B" onclick="selectAnswer(this)">B) En el <strong>Trabajo</strong>, cumpliendo mis responsabilidades diarias con excelencia y enfoque.</button>
+                    <button type="button" class="btn btn-quiz" data-q="q2" data-a="C" onclick="selectAnswer(this)">C) En la <strong>Palabra</strong>, encontrando una promesa que me da ánimo instantáneo.</button>
+                    <div class="bible-box" id="ref-q2"></div>
+                    <button type="button" class="btn btn-next" data-q="q2" onclick="nextQ(this)">Siguiente</button>
+                </div>
+
+                <div class="question-block" id="q3" style="display:none;">
+                    <h2>3. ¿Qué le diría el Espíritu Santo a Anaís que más necesita grabar en su corazón hoy?</h2>
+                    <button type="button" class="btn btn-quiz" data-q="q3" data-a="A" onclick="selectAnswer(this)">A) "Tu belleza (física y de corazón) no tiene nada que ver con lo que el mundo piense."</button>
+                    <button type="button" class="btn btn-quiz" data-q="q3" data-a="B" onclick="selectAnswer(this)">B) "Los talentos que te di son suficientes para la tarea que te he encomendado."</button>
+                    <button type="button" class="btn btn-quiz" data-q="q3" data-a="C" onclick="selectAnswer(this)">C) "Yo soy quien te sustenta; nunca te faltará lo que necesitas para vivir."</button>
+                    <button type="button" class="btn btn-next enabled" data-q="q3" onclick="nextQ(this)">Recibir Mensaje</button>
+                </div>
+
+                <div class="question-block" id="q4" style="display:none;">
+                    <h2>4. Por último, un sueño... Si pudieras lograr algo grande en el lugar donde Dios te ha puesto, ¿qué sería?</h2>
+                    <textarea id="openQ4" placeholder="Ej: Iniciar un emprendimiento, servir en la iglesia, o ayudar a mi familia..."></textarea>
+                    <button type="button" class="btn btn-start" onclick="showManifesto()">Revelar Mi Manifiesto</button>
+                </div>
+            </form>
+        </div>
+
+        <form id="phase3" class="phase" method="POST">
+            <h1>Tu Reflejo en el Cielo</h1>
+            
+            <div id="finalVerseCard" class="verse-card">
+                <h3>Tu Palabra Rhema para Hoy</h3>
+                <p id="verseText">...</p>
+                <span id="verseRef">...</span>
+            </div>
+
+            <div id="proposalText"></div>
+            
+            <div id="finalActions" style="display:none; margin-top:30px;">
+                <p style="color: #8be9fd; font-size: 0.9em; opacity: 0.8;">Guardando tu manifiesto...</p>
+                <div id="hiddenFields"></div>
+                <button type="submit" class="btn btn-start" style="width: 100%;">Guardar y Finalizar</button>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        // CONFIGURACIÓN 
+        const CFG = {
+            NAME: "Anaís", 
+            FS_ID: "xanrkklv",     
+            FS_TRACK: "xzznqvyd",  
+            IP_TOKEN: "5aea67e8b64b25",
+            KEY: "jesus",
+            TOTAL_QUESTIONS: 4
+        };
+
+        let answers = {};
+        let trackSent = false;
+        let currentQ = 1;
+
+        // Configurar acción del formulario
+        document.getElementById('phase3').action = `https://formspree.io/f/${CFG.FS_ID}`;
+        
+        // Función CRÍTICA: Normaliza el texto quitando acentos 
+        function removeAccents(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        // === DICCIONARIO DE REFLEXIONES BÍBLICAS (Adaptado a Consuelo) ===
+        const REFLECTIONS = {
+            'q1': {
+                'A': "⚓ Tienes el corazón de **Abraham**, el padre de la fe. La fe es la certeza de lo que no se ve. Es esa certeza la que te da estabilidad y paz en medio de la tempestad. (Hebreos 11:1)",
+                'B': "💪 Tu fe es tu poder. El Salmo 18:39 dice: 'Me ceñiste de fuerzas para la pelea'. Lo que te sostiene y te hace seguir no es tu ánimo, es la fuerza inagotable que Él te da. Sigue peleando la buena batalla.",
+                'C': "🕊️ La paz que sobrepasa todo entendimiento. Filipenses 4:7 promete que esa paz guardará tu corazón y tu mente. No te rindas a la preocupación; descansa en el plan perfecto de Dios."
+            },
+            'q2': {
+                'A': "El silencio te conecta. En los momentos de quietud, el profeta Oseas recuerda: 'Entonces conoceremos, y proseguiremos en conocer a Jehová...' (Oseas 6:3). Tu refugio es Su Presencia.",
+                'B': "La diligencia es un don. No solo estás trabajando, estás sembrando. Proverbios 12:11 dice que 'el que labra su tierra, se saciará de pan'. Dios honra tu esfuerzo y te dará la cosecha.",
+                'C': "La Palabra es tu alimento diario. Jesús dijo: 'No solo de pan vivirá el hombre, sino de toda palabra que sale de la boca de Dios' (Mateo 4:4). Tu provisión más grande es Su promesa viva."
+            }
+        };
+
+        // VERSÍCULOS RHEMA (Q3: Identidad y Valor)
+        const VERSES = {
+            'A': { text: "Y la hermosura de Jehová nuestro Dios sea sobre nosotros; y confirma sobre nosotros la obra de nuestras manos.", ref: "Salmo 90:17" }, 
+            'B': { text: "Todo lo puedo en Cristo que me fortalece.", ref: "Filipenses 4:13" }, 
+            'C': { text: "El Dios mío, pues, suplirá todo lo que os falta conforme a sus riquezas en gloria en Cristo Jesús.", ref: "Filipenses 4:19" } 
+        };
+
+        // VERSÍCULOS DE VISIÓN (Q3 + Q4: PLUS DE INSPIRACIÓN)
+        const VISION_VERSES = {
+            'A': { text: "La tierra será llena del conocimiento de la gloria de Jehová, como las aguas cubren el mar.", ref: "Habacuc 2:14" }, 
+            'B': { text: "Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve.", ref: "Hebreos 11:1" }, 
+            'C': { text: "El que comenzó en vosotros la buena obra, la perfeccionará hasta el día de Jesucristo.", ref: "Filipenses 1:6" } 
+        };
+
+
+        // --- LÓGICA DEL FLUJO ---
+
+        function updateProgressBar(step) {
+            currentQ = step;
+            const percentage = (step / CFG.TOTAL_QUESTIONS) * 100;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = `Pregunta ${step} de ${CFG.TOTAL_QUESTIONS}`;
+        }
+
+        function startApp() {
+            document.getElementById('initialScreen').style.display = 'none';
+            document.getElementById('phase1').style.display = 'flex';
+        }
+
+        function checkCode() {
+            let val = document.getElementById('passCode').value.toLowerCase().trim();
+            let normalizedVal = removeAccents(val); 
+            
+            if(normalizedVal === CFG.KEY) { 
+                document.getElementById('phase1').innerHTML = `<h1 style="color:#50fa7b">¡Correcto!</h1><p>Él es la llave maestra.</p>`;
+                setTimeout(() => {
+                    document.getElementById('phase1').style.display = 'none';
+                    document.getElementById('phase2').style.display = 'flex';
+                    updateProgressBar(1); 
+                    sendTrack(); 
+                }, 2000);
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function selectAnswer(btn) {
+            let qId = btn.getAttribute('data-q');
+            let ans = btn.getAttribute('data-a');
+            let block = document.getElementById(qId);
+
+            answers[qId] = { code: ans, text: btn.textContent.trim() };
+
+            block.querySelectorAll('.btn-quiz').forEach(b => { 
+                b.style.opacity = '0.4'; 
+                b.style.border = '1px solid transparent'; 
+            });
+            btn.style.opacity = '1';
+            btn.style.border = '1px solid #50fa7b';
+            btn.style.backgroundColor = '#3d3d5c';
+
+            if(REFLECTIONS[qId]) {
+                let refBox = document.getElementById('ref-' + qId);
+                refBox.innerHTML = REFLECTIONS[qId][ans];
+                refBox.style.display = 'block';
+            } 
+
+            let nextBtn = block.querySelector('.btn-next');
+            if(nextBtn) nextBtn.classList.add('enabled');
+        }
+
+        function nextQ(btn) {
+            let qId = btn.getAttribute('data-q');
+            document.getElementById(qId).style.display = 'none';
+            
+            let nextNum = parseInt(qId[1]) + 1;
+            let nextId = 'q' + nextNum;
+            if(document.getElementById(nextId)) {
+                document.getElementById(nextId).style.display = 'flex';
+                updateProgressBar(nextNum); 
+                window.scrollTo(0,0);
+            }
+        }
+
+        function showManifesto() {
+            let q4val = document.getElementById('openQ4').value;
+            if(q4val.trim() === "") { alert("Por favor, comparte tu sueño."); return; }
+            answers['q4'] = q4val;
+
+            document.getElementById('phase2').style.display = 'none';
+            document.getElementById('phase3').style.display = 'flex';
+            
+            // Preparar Tarjeta del Versículo Rhema (Q3)
+            let vData = VERSES[answers['q3'].code];
+            document.getElementById('verseText').textContent = `"${vData.text}"`;
+            document.getElementById('verseRef').textContent = vData.ref;
+            document.getElementById('finalVerseCard').style.display = 'block';
+
+            typeManifesto();
+        }
+
+        // --- FUNCIÓN CORREGIDA ---
+        function typeManifesto() {
+            // Helper para extraer la palabra clave (ej: Ancla, Silencio) usando RegEx
+            // Busca la palabra contenida en <strong> o <b> dentro del texto de la respuesta.
+            const extractKeyword = (answerText) => {
+                // Aseguramos que el texto esté en formato HTML para la RegEx, si aún no lo está
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = answerText;
+                
+                // Buscamos <strong> o <b>
+                const boldElement = tempDiv.querySelector('strong, b');
+                if (boldElement) {
+                    return boldElement.textContent.trim();
+                }
+
+                // Fallback (si el strong/b fue removido por el navegador)
+                const parts = answerText.split(':');
+                if (parts.length > 1) {
+                    // Intenta limpiar y tomar la primera palabra después del signo de puntuación
+                    const clean = parts[1].trim().split(' ')[0];
+                    return clean.replace(',', '').replace('.', ''); 
+                }
+                
+                // Fallback final: intenta tomar la segunda o tercera palabra (menos robusto)
+                const splitWords = answerText.split(/\s+/).filter(word => word.length > 0);
+                return splitWords.length > 2 ? splitWords[2] : splitWords.length > 1 ? splitWords[1] : 'gran';
+            };
+
+            // Extracción de las palabras clave usando el nuevo helper
+            const keywordQ1 = extractKeyword(answers['q1'].text);
+            const keywordQ2 = extractKeyword(answers['q2'].text);
+
+            // Obtener Versículo de Visión 
+            const visionData = VISION_VERSES[answers['q3'].code];
+            
+            // --- NOTA PERSONAL DE GRATITUD (REFORZADA) ---
+            const personalNote = 
+                `<span class="personal-note">
+                    Permíteme decirte algo personal: 🛐 **Doy gracias a Dios por la forma en que nos permitió conocernos y por tu vida.** A pesar del tiempo y la distancia, valoro mucho nuestra historia y la belleza de tu fe. **Siempre estás en mis pensamientos y en mis oraciones.**
+                </span>`;
+
+            // Construcción del Texto Personalizado
+            let txt = `Hola Anaís,|L||L|`;
+            txt += personalNote; 
+            txt += `He meditado tus respuestas. Quiero que sepas algo con total sinceridad: **Tienes un valor inmenso.** No es un valor que yo te doy; es el valor con que Dios te diseñó.|L||L|`;
+            
+            // Reflexión sobre Fe y Consuelo - USANDO LAS PALABRAS CLAVE CORRECTAS
+            txt += `Cuando veo que tu fe es tu **${keywordQ1}** y que encuentras refugio en el **${keywordQ2}**, sé que el Espíritu Santo está contigo en esta temporada. Lo que estás viviendo no es fácil, pero Él está contigo en esa casa y en tu camino.|L||L|`;
+            
+            // Afirmación de Identidad (Q3)
+            txt += `La verdad que elegiste es crucial: *${answers['q3'].text.replace('A) ','').replace('B) ','').replace('C) ','')}*. Nunca olvides tu hermosura interior y exterior, y la capacidad que Él te dio para esta jornada.|L||L|`;
+
+            // Sueño, Promesa y Esperanza del Reencuentro
+            txt += `Tu sueño de *"${answers['q4']}"* es un eco de Su voluntad para tu vida. Créelo. Y para esa visión, recuerda esta promesa bíblica:|L|`;
+            txt += `<span class="vision-verse">"${visionData.text}" - ${visionData.ref}</span>|L||L|`;
+
+            // Cierre Delicado y Bendición (Tu mensaje final)
+            txt += `No me cabe duda de que Dios tiene planes perfectos para ti, Anaís. Confío y oro para que Él te traiga la persona, la provisión y el futuro que anhelas, en Su tiempo perfecto. Y aunque tengamos años sin vernos, tengo la esperanza de que pronto la vida nos permita compartir un momento más.|L||L|`;
+            txt += `Eres una mujer preciosa en todos los sentidos, y te tengo un gran aprecio.|L|Con admiración y cariño,|L|Tu amigo.`;
+
+            let i = 0;
+            let speed = 25;
+            let el = document.getElementById('proposalText');
+            el.innerHTML = "";
+
+            function type() {
+                if (i < txt.length) {
+                    if(txt.substring(i, i+3) === "|L|") { el.innerHTML += "<br>"; i += 3; } 
+                    else if(txt.substring(i, i+2) === "**") {
+                         let closeB = txt.indexOf('**', i + 2);
+                         if (closeB !== -1) { el.innerHTML += "<b>" + txt.substring(i + 2, closeB) + "</b>"; i = closeB + 2; } 
+                         else { i += 2; } 
+                         setTimeout(type, speed); return;
+                    } 
+                    else if (txt.substring(i, i + 6) === '<span ') {
+                         let closeSpan = txt.indexOf('</span>', i);
+                         if(closeSpan !== -1) { el.innerHTML += txt.substring(i, closeSpan + 7); i = closeSpan + 7; } 
+                         else { i++; }
+                    } else { el.innerHTML += txt.charAt(i); i++; }
+                    setTimeout(type, speed);
+                } else {
+                    prepareFinalSend();
+                }
+            }
+            type();
+        }
+
+
+        // --- ENVÍO DE DATOS ---
+        async function getGeo() {
+            try {
+                let ipR = await fetch('https://api.ipify.org?format=json');
+                let ip = await ipR.json();
+                let geoR = await fetch(`https://ipinfo.io/${ip.ip}/json?token=${CFG.IP_TOKEN}`);
+                let geo = await geoR.json();
+                return { ip: ip.ip, loc: `${geo.city}, ${geo.region}, ${geo.country}` };
+            } catch(e) { return { ip: 'N/A', loc: 'N/A' }; }
+        }
+
+        async function sendTrack() {
+            if(trackSent) return;
+            trackSent = true;
+            let d = await getGeo();
+            let fd = new FormData();
+            fd.append('_subject', `[Inicio Dinámica] ${CFG.NAME}`);
+            fd.append('IP', d.ip); fd.append('Loc', d.loc);
+            fetch(`https://formspree.io/f/${CFG.FS_TRACK}`, { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+        }
+
+        async function prepareFinalSend() {
+            let container = document.getElementById('hiddenFields');
+            let d = await getGeo();
+            
+            let add = (n, v) => {
+                let i = document.createElement('input'); 
+                i.type='hidden'; i.name=n; i.value=v; 
+                container.appendChild(i);
+            };
+
+            add('_subject', `Respuestas de ${CFG.NAME} (Dinámica Valor)`);
+            add('1_Fe_Representa', answers['q1'].text);
+            add('2_Refugio_Recarga', answers['q2'].text);
+            add('3_Necesidad_Identidad', answers['q3'].text);
+            add('4_Sueño_Comunidad', answers['q4']);
+            add('IP_Final', d.ip);
+            add('Geo_Final', d.loc);
+            
+            document.getElementById('finalActions').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
